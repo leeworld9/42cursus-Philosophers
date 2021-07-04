@@ -6,12 +6,12 @@
 #    By: dohelee <dohelee@student.42seoul.kr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/02 21:56:59 by dohelee           #+#    #+#              #
-#    Updated: 2021/07/04 20:37:12 by dohelee          ###   ########.fr        #
+#    Updated: 2021/07/05 00:45:50 by dohelee          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror
 
 NAME = philo
 SRCS_DIR = ./src

@@ -6,13 +6,42 @@
 /*   By: dohelee <dohelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/26 04:10:25 by dohelee           #+#    #+#             */
-/*   Updated: 2021/07/04 07:55:02 by dohelee          ###   ########.fr       */
+/*   Updated: 2021/07/05 00:45:30 by dohelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-void	param_parse(int argc, char **argv)
+int	param_chk(int argc, char **argv)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	if (argc < 5)
+		return (0);
+	while (++i < argc)
+	{
+		j = 0;
+		while (argv[i][j] != '\0')
+		{
+			if (!ft_isdigit(argv[i][j]))
+				return (0);
+			j++;
+		}
+	}
+	if (!param_parse(argc, argv))
+		return (0);
+	i = 0;
+	while (++i < argc)
+	{
+		if (atoi(argv[i]) == 0)
+			return (0);
+	}
+	return (1);
+}
+
+int	param_parse(int argc, char **argv)
 {
 	g_data.number_of_philo = ft_atoi(argv[1]);
 	g_data.time_to_die = ft_atoi(argv[2]);
@@ -20,6 +49,13 @@ void	param_parse(int argc, char **argv)
 	g_data.time_to_sleep = ft_atoi(argv[4]);
 	if (argc == 6)
 		g_data.philo_must_eat = ft_atoi(argv[5]);
+	if (g_data.number_of_philo == -1 || g_data.time_to_die == -1)
+		return (0);
+	if (g_data.time_to_eat == -1 || g_data.time_to_sleep == -1)
+		return (0);
+	if (g_data.philo_must_eat == -1)
+		return (0);
+	return (1);
 }
 
 void	set_data(void)
@@ -42,12 +78,11 @@ void	set_data(void)
 	}
 }
 
-int	init(int argc, char **argv)
+int	init(void)
 {
-	param_parse(argc, argv);
 	pthread_mutex_init(&g_data.write, NULL);
 	pthread_mutex_init(&g_data.lock, NULL);
-	pthread_mutex_init(&g_data.must_chk, NULL);
+	pthread_mutex_init(&g_data.chk_lock, NULL);
 	g_data.ph = malloc(sizeof(t_philo) * g_data.number_of_philo);
 	if (g_data.ph == NULL)
 		return (0);

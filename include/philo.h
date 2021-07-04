@@ -6,7 +6,7 @@
 /*   By: dohelee <dohelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/24 20:14:54 by dohelee           #+#    #+#             */
-/*   Updated: 2021/07/04 20:38:49 by dohelee          ###   ########.fr       */
+/*   Updated: 2021/07/05 00:32:18 by dohelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,18 +45,18 @@ typedef struct s_data
 	int				philo_must_eat;
 	pthread_mutex_t	write;
 	pthread_mutex_t	lock;
-	pthread_mutex_t	must_chk;
+	pthread_mutex_t	chk_lock;
 	t_philo			*ph;
 	t_fork			*fork;
 }				t_data;
 
 t_data				g_data;
 
-void				param_parse(int argc, char **argv);
-void				set_data(void);
-int					init(int argc, char **argv);
-
 int					param_chk(int argc, char **argv);
+int					param_parse(int argc, char **argv);
+void				set_data(void);
+int					init(void);
+
 bool				must_eatchk(void);
 int					get_free(void);
 int					end_check(int argc);
@@ -71,7 +71,7 @@ void				*thread(void *arg);
 int					ft_isdigit(int c);
 int					ft_atoi(const char *n);
 
-void				new_sleep(unsigned long long current_time, int optional_time);
+void				new_sleep(unsigned long long curr_time, int opt_time);
 unsigned long long	gettime(void);
 
 void				ft_putnbr(unsigned long long n);

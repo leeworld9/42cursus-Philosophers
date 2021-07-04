@@ -6,17 +6,17 @@
 /*   By: dohelee <dohelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 03:25:48 by dohelee           #+#    #+#             */
-/*   Updated: 2021/07/04 20:39:21 by dohelee          ###   ########.fr       */
+/*   Updated: 2021/07/04 20:42:58 by dohelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-void	new_sleep(unsigned long long current_time, int optional_time)
+void	new_sleep(unsigned long long curr_time, int opt_time)
 {
 	unsigned long long	target_time;
 
-	target_time = current_time + optional_time;
+	target_time = curr_time + opt_time;
 	while (target_time > gettime())
 		continue ;
 }

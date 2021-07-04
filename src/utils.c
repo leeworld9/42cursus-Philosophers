@@ -6,7 +6,7 @@
 /*   By: dohelee <dohelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/24 20:13:30 by dohelee           #+#    #+#             */
-/*   Updated: 2021/07/04 20:37:16 by dohelee          ###   ########.fr       */
+/*   Updated: 2021/07/04 23:59:01 by dohelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static int	ft_limitchk(int nbr)
 	if (INT_MAX < nbr)
 		return (-1);
 	else if (INT_MIN > nbr)
-		return (0);
+		return (-1);
 	else
 		return (nbr);
 }
