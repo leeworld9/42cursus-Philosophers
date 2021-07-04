@@ -6,11 +6,11 @@
 /*   By: dohelee <dohelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/24 20:13:30 by dohelee           #+#    #+#             */
-/*   Updated: 2021/06/24 20:19:38 by dohelee          ###   ########.fr       */
+/*   Updated: 2021/07/04 20:37:16 by dohelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../include/philo.h"
 
 int	ft_isdigit(int c)
 {
@@ -39,30 +39,31 @@ static int	ft_limitchk(int nbr)
 		return (nbr);
 }
 
-int			ft_atoi(const char *n)
+int	ft_atoi(const char *n)
 {
 	int			i;
 	long long	sum;
 	long long	chk;
 
-	i = 0;
+	i = -1;
 	sum = 0;
 	chk = 1;
 	while (ft_isspace(*n))
 		n++;
 	if (*n == '-' || *n == '+')
-		chk = (*n++ == '-') ? -1 : 1;
-	while (n[i] != '\0')
+	{
+		if (*n++ == '-')
+			chk = -1;
+	}
+	while (n[++i] != '\0')
 	{
 		if (ft_isspace(n[i]) || !ft_isdigit(n[i]) || n[i] == '-' || n[i] == '+')
 			return (ft_limitchk(sum * chk));
-		sum *= 10;
-		sum += (n[i] - '0');
+		sum = (sum * 10) + (n[i] - '0');
 		if (INT_MAX < sum * chk)
 			return (-1);
 		else if (INT_MIN > sum * chk)
 			return (0);
-		i++;
 	}
 	return (sum * chk);
 }

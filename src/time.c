@@ -6,23 +6,19 @@
 /*   By: dohelee <dohelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 03:25:48 by dohelee           #+#    #+#             */
-/*   Updated: 2021/06/27 03:27:33 by dohelee          ###   ########.fr       */
+/*   Updated: 2021/07/04 20:39:21 by dohelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../include/philo.h"
 
-int					ft_nbrlen(unsigned long int nb)
+void	new_sleep(unsigned long long current_time, int optional_time)
 {
-	int		i;
+	unsigned long long	target_time;
 
-	i = 1;
-	while (nb > 9)
-	{
-		i++;
-		nb /= 10;
-	}
-	return (i);
+	target_time = current_time + optional_time;
+	while (target_time > gettime())
+		continue ;
 }
 
 unsigned long long	gettime(void)
