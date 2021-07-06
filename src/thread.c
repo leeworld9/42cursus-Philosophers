@@ -6,85 +6,89 @@
 /*   By: dohelee <dohelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 03:25:14 by dohelee           #+#    #+#             */
-/*   Updated: 2021/07/05 00:44:07 by dohelee          ###   ########.fr       */
+/*   Updated: 2021/07/07 01:01:49 by dohelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-unsigned long long	lock_fork(int act, int prev)
+unsigned long long	lock_fork(int id, int right, int left)
 {
-	unsigned long long	time;
-
-	pthread_mutex_lock(&g_data.fork[prev].lock);
-	time = gettime();
-	g_data.fork[prev].state = true;
-	msg(time, act, " has taken a fork\n", 18);
+	g_data.fork[left].state = true;
+	msg(id, "has taken a fork\n");
 	if (g_data.number_of_philo != 1)
 	{
-		pthread_mutex_lock(&g_data.fork[act].lock);
-		time = gettime();
-		g_data.fork[act].state = true;
-		msg(time, act, " has taken a fork\n", 18);
+		g_data.fork[right].state = true;
+		msg(id, "has taken a fork\n");
 	}
 	else
-		pthread_mutex_unlock(&g_data.fork[prev].lock);
-	return (time);
+	{
+		g_data.fork[left].state = false;
+		pthread_mutex_unlock(&g_data.fork[left].lock);
+	}
+	return (getworktime());
 }
 
-unsigned long long	eating(int act, int prev, unsigned long long time)
+unsigned long long	eating(int id, int right, int left, unsigned long long time)
 {
-	g_data.ph[act].last_eat_time = time;
-	msg(time, act, " is eating\n", 11);
-	new_sleep(time, g_data.time_to_eat);
-	g_data.fork[prev].state = false;
-	g_data.fork[act].state = false;
-	time = gettime();
-	g_data.ph[act].total_eat++;
-	pthread_mutex_unlock(&g_data.fork[prev].lock);
-	pthread_mutex_unlock(&g_data.fork[act].lock);
-	return (time);
+	g_data.ph[id].last_eat_time = time;
+	msg(id, "is eating\n");
+	new_sleep(gettime(), g_data.time_to_eat);
+	g_data.fork[right].state = false;
+	pthread_mutex_unlock(&g_data.fork[right].lock);
+	g_data.fork[left].state = false;
+	pthread_mutex_unlock(&g_data.fork[left].lock);
+	g_data.ph[id].total_eat++;
+	return (getworktime());
 }
 
-void	sleeping(int act, unsigned long long time)
+bool	fork_chk(int left, int right)
 {
-	msg(time, act, " is sleeping\n", 13);
-	new_sleep(time, g_data.time_to_sleep);
-}
-
-void	thinking(int act)
-{
-	unsigned long long	time;
-
-	time = gettime();
-	msg(time, act, " is thinking\n", 13);
+	pthread_mutex_lock(&g_data.fork[left].lock);
+	if (g_data.fork[left].state != false)
+	{
+		pthread_mutex_unlock(&g_data.fork[left].lock);
+		return (false);
+	}
+	else
+	{
+		if (g_data.number_of_philo != 1)
+		{
+			pthread_mutex_lock(&g_data.fork[right].lock);
+			if (g_data.fork[right].state != false)
+			{
+				pthread_mutex_unlock(&g_data.fork[left].lock);
+				pthread_mutex_unlock(&g_data.fork[right].lock);
+				return (false);
+			}
+		}	
+	}
+	return (true);
 }
 
 void	*thread(void *arg)
 {
-	int					act;
-	int					prev;
+	int					id;
+	int					right;
+	int					left;
 	unsigned long long	time;
 
-	act = *(int *)arg;
-	prev = act - 1;
-	if (prev == -1)
-		prev = g_data.number_of_philo - 1;
-	while (g_data.ph[act].state == true)
+	id = *(int *)arg;
+	right = id;
+	left = right - 1;
+	if (left == -1)
+		left = g_data.number_of_philo - 1;
+	while (g_data.ph[right].state == true)
 	{
-		pthread_mutex_lock(&g_data.lock);
-		if (g_data.fork[prev].state == false && g_data.fork[act].state == false)
-		{
-			time = lock_fork(act, prev);
-			pthread_mutex_unlock(&g_data.lock);
-			if (g_data.number_of_philo == 1)
-				return (0);
-			time = eating(act, prev, time);
-			sleeping(act, time);
-			thinking(act);
-		}
-		else
-			pthread_mutex_unlock(&g_data.lock);
+		if (!fork_chk(left, right))
+			continue ;
+		time = lock_fork(id, right, left);
+		if (g_data.number_of_philo == 1)
+			break ;
+		time = eating(id, right, left, time);
+		msg(id, "is sleeping\n");
+		new_sleep(gettime(), g_data.time_to_sleep);
+		time = getworktime();
+		msg(id, "is thinking\n");
 	}
-	return (0);
 }

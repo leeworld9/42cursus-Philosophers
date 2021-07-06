@@ -6,7 +6,7 @@
 /*   By: dohelee <dohelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 03:25:48 by dohelee           #+#    #+#             */
-/*   Updated: 2021/07/04 20:42:58 by dohelee          ###   ########.fr       */
+/*   Updated: 2021/07/06 23:48:02 by dohelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,17 @@ void	new_sleep(unsigned long long curr_time, int opt_time)
 
 	target_time = curr_time + opt_time;
 	while (target_time > gettime())
-		continue ;
+	{
+		usleep(1);
+	}
+}
+
+unsigned long long	getworktime(void)
+{
+	unsigned long long	worktime;
+
+	worktime = gettime() - g_data.start_time;
+	return (worktime);
 }
 
 unsigned long long	gettime(void)

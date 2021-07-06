@@ -6,7 +6,7 @@
 /*   By: dohelee <dohelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 22:59:00 by dohelee           #+#    #+#             */
-/*   Updated: 2021/07/05 00:45:10 by dohelee          ###   ########.fr       */
+/*   Updated: 2021/07/07 00:18:09 by dohelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,25 +17,39 @@ bool	must_eatchk(void)
 	int	i;
 
 	i = 0;
+	pthread_mutex_lock(&g_data.chk_lock);
 	while (i < g_data.number_of_philo)
 	{
 		if (g_data.ph[i].total_eat < g_data.philo_must_eat)
+		{
+			pthread_mutex_unlock(&g_data.chk_lock);
 			return (false);
+		}
 		i++;
 	}
+	pthread_mutex_unlock(&g_data.chk_lock);
 	return (true);
 }
 
-int	get_free(void)
+int	get_free(int id, bool died)
 {
-	int	i;
+	int					i;
+	unsigned long long	time;
 
+	time = getworktime();
 	i = 0;
 	while (i < g_data.number_of_philo)
 		g_data.ph[i++].state = false;
 	i = 0;
 	while (i < g_data.number_of_philo)
 		pthread_join(g_data.ph[i++].th, NULL);
+	if (died == true)
+		dead_msg(id, "died\n", time);
+	pthread_mutex_destroy(&g_data.chk_lock);
+	pthread_mutex_destroy(&g_data.write);
+	i = 0;
+	while (i < g_data.number_of_philo)
+		pthread_mutex_destroy(&g_data.fork[i++].lock);
 	free(g_data.fork);
 	free(g_data.ph);
 	return (0);
@@ -47,20 +61,20 @@ int	end_check(int argc)
 	unsigned long long	time;
 
 	i = 0;
-	time = gettime();
+	time = getworktime();
 	pthread_mutex_lock(&g_data.chk_lock);
 	while (i < g_data.number_of_philo)
 	{
 		if (g_data.ph[i].last_eat_time + g_data.time_to_die < time)
 		{
-			msg(time, i, " died\n", 6);
-			return (get_free());
+			pthread_mutex_unlock(&g_data.chk_lock);
+			return (get_free(i, true));
 		}
 		i++;
 	}
-	if (argc == 6 && must_eatchk())
-		return (get_free());
 	pthread_mutex_unlock(&g_data.chk_lock);
+	if (argc == 6 && must_eatchk())
+		return (get_free(0, false));
 	return (1);
 }
 

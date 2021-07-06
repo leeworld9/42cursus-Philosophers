@@ -6,7 +6,7 @@
 /*   By: dohelee <dohelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/26 04:10:25 by dohelee           #+#    #+#             */
-/*   Updated: 2021/07/05 00:45:30 by dohelee          ###   ########.fr       */
+/*   Updated: 2021/07/06 23:32:16 by dohelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,15 +60,14 @@ int	param_parse(int argc, char **argv)
 
 void	set_data(void)
 {
-	int					i;
-	unsigned long long	time;
+	int	i;
 
 	i = 0;
-	time = gettime();
+	g_data.start_time = gettime();
 	while (i < g_data.number_of_philo)
 	{
 		g_data.ph[i].id = i;
-		g_data.ph[i].last_eat_time = time;
+		g_data.ph[i].last_eat_time = 0;
 		g_data.ph[i].total_eat = 0;
 		g_data.ph[i].state = true;
 		g_data.fork[i].id = i;
@@ -81,7 +80,6 @@ void	set_data(void)
 int	init(void)
 {
 	pthread_mutex_init(&g_data.write, NULL);
-	pthread_mutex_init(&g_data.lock, NULL);
 	pthread_mutex_init(&g_data.chk_lock, NULL);
 	g_data.ph = malloc(sizeof(t_philo) * g_data.number_of_philo);
 	if (g_data.ph == NULL)

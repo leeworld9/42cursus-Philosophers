@@ -6,7 +6,7 @@
 /*   By: dohelee <dohelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/24 20:13:30 by dohelee           #+#    #+#             */
-/*   Updated: 2021/07/04 23:59:01 by dohelee          ###   ########.fr       */
+/*   Updated: 2021/07/06 23:48:19 by dohelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	ft_atoi(const char *n)
 		if (INT_MAX < sum * chk)
 			return (-1);
 		else if (INT_MIN > sum * chk)
-			return (0);
+			return (-1);
 	}
 	return (sum * chk);
 }
