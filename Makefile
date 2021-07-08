@@ -3,15 +3,15 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dohelee <dohelee@student.42seoul.kr>       +#+  +:+       +#+         #
+#    By: dohelee <dohelee@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/02 21:56:59 by dohelee           #+#    #+#              #
-#    Updated: 2021/07/06 01:41:29 by dohelee          ###   ########.fr        #
+#    Updated: 2021/07/08 12:27:06 by dohelee          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = gcc
-CFLAGS = #-Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror
 
 NAME = philo
 SRCS_DIR = ./src

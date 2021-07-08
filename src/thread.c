@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   thread.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dohelee <dohelee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: dohelee <dohelee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 03:25:14 by dohelee           #+#    #+#             */
-/*   Updated: 2021/07/07 01:01:49 by dohelee          ###   ########.fr       */
+/*   Updated: 2021/07/08 12:29:08 by dohelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,4 +91,5 @@ void	*thread(void *arg)
 		time = getworktime();
 		msg(id, "is thinking\n");
 	}
+	return (0);
 }
